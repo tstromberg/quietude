@@ -1,36 +1,10 @@
 #!/bin/sh
 # 
-# Distraction-free Android installer
+# Quietude - a distraction-free Android experience
 #
 # Usage:
-#    ./minimal_android_phone.sh disable distractions
+#    ./quietude.sh disable distractions
 #
-# This script will disable most sources of distractions on your phone. It requires
-# USB debugging (Developer Mode) to be enabled, and is designed to be run right after
-# a factory reset. It can also be run at any point afterwards.
-#
-# Think of it as a "LightPhone"-like experience on a stock-android phone
-#
-# What's it disable?
-#
-#   - Google Chrome / Chromium Web Browsers (but not the webview)
-#   - Google Play Store
-#   - Google Maps
-#   - Gmail
-#   - Verizon apps
-#   - Wellbeing
-#   - Audio Recorder
-#   - Files
-#   - Youtube Music
-#   - Youtube
-#   - Google Search Box
-#   - Google Docs
-#
-# Recommended post-execution steps:
-#
-#   - Replace the Android launcher with olauncher
-#   - Change your interface language to one you vaguely understand or want to learn more of
-#   - Force your screen into monochrome mode (Settings -> Developer -> Simulate color space -> Monochromacy)
 
 readonly BLOAT="
 com.android.musicfx
@@ -64,6 +38,36 @@ export PATH=$PATH:$HOME/Downloads/platform-tools
 readonly MODE=$1
 shift
 
+function adb_installed() {
+   adb version && return
+
+   if [ -x  /opt/homebrew/bin/brew ]; then
+     echo "Installing adb via homebrew ..."
+     brew install android-platform-tools
+     return
+   fi
+
+   if [ -x /usr/bin/apt ]; then
+    echo "Installing adb via apt ..."
+    sudo apt-get install android-tools-adb
+    return
+   fi
+
+   echo "Please install adb: https://developer.android.com/studio/releases/platform-tools"
+   exit 1
+}
+
+function adb_connected() {
+  devices=$(adb devices -l | egrep -v "^List of devices|^\$")
+  echo "adb devices found:\n${devices}"
+
+  if [ "${devices}" = "" ]; then
+    echo "Phone not found. Connect a USB cable and enable debugging mode: https://developer.android.com/studio/command-line/adb"
+    exit 1
+  fi
+}
+
+
 list=""
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -95,17 +99,22 @@ done
 items="$(echo $list | sort -u | grep '\.'| xargs | sed s/' '/'\$\|\^'/g)"
 APP_RE="^${items}$"
 
-echo "mode: ${MODE}"
-echo "apps: ${APP_RE}"
-
 case "${MODE}" in
   enable)
+    echo "enable apps: ${APP_RE}\n"
+    adb_installed || exit 1
+    adb_connected || exit 1
+
     for pkg in $(adb shell pm list packages -u | sed s/package://g | egrep "${APP_RE}"); do
       adb shell pm enable --user 0 $pkg
       adb shell cmd package install-existing --user 0 $pkg
     done
     ;;
   disable)
+    echo "disable apps: ${APP_RE}\n"
+    adb_installed || exit 1
+    adb_connected || exit 1
+    
     for pkg in $(adb shell pm list packages | sed s/package://g | egrep "${APP_RE}"); do
       adb shell pm disable-user --user 0 $pkg
       adb shell pm uninstall --user 0 $pkg
