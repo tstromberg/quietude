@@ -1,6 +1,6 @@
 # Quietude
 
-![osquery-defense-kit](images/logo.jpg?raw=true "quietude logo")
+![quietude](images/logo.jpg?raw=true "quietude logo")
 
 Quietude provides a distraction-free Android experience through disabling all the system applications that you don't need day-to-day. Think of it as a "LightPhone"-like experience on a regular phone, but where you get to choose your applications. 
 
