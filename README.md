@@ -6,6 +6,14 @@ Quietude provides a distraction-free Android experience through disabling all th
 
 Applications are disabled in a way that is reversable, but only by plugging in a USB cable and running quietude (or adb) again.
 
+## Example
+
+Here's what my phone looks like when I go into my "focus" mode:
+
+![example](images/example.jpg?raw=true "screenshot")
+
+A couple of bare-bones applications, presented by the [olauncher](https://play.google.com/store/apps/details?id=app.olauncher&hl=en_US&gl=US) alternative launcher.  There are more applications hidden if I scroll upward, but there is no Chrome, Google Search, or Youtube - and no way to enable them either until desperate and at a computer again.
+
 ## Usage
 
 ![screenshot](images/screenshot.jpg?raw=true "screenshot")
@@ -74,11 +82,15 @@ What does Quietude disable on a phone? It depends on the category used:
 
 ## FAQ
 
-### What about disabling Social Networking?
+### What about disabling installed Social Networking apps?
 
 I don't have any to test against, but feel free to send a pull request if you know the ID of any that ship with a phone.
 
 ### What phones will this work on?
 
 As far as I know, any phone where you can enable USB Debugging. This should include all [Google Play supported devices](https://storage.googleapis.com/play_public/supported_devices.html).
+
+### What about ordering in restaurants?
+
+This has happened to me! In the unlikely case that they do not have a paper menu, I just ask the waiter for their recommendations and they are happy to put an order in. They've always made better choices than I would.
 
