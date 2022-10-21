@@ -12,7 +12,7 @@ Here's what my phone looks like when I go into my "focus" mode:
 
 ![example](images/example.jpg?raw=true "screenshot")
 
-A couple of bare-bones applications, presented by the [olauncher](https://play.google.com/store/apps/details?id=app.olauncher&hl=en_US&gl=US) alternative launcher.  There are more applications hidden if I scroll upward, but there is no Chrome, Google Search, or Youtube - and no way to enable them either until desperate and at a computer again.
+A couple of bare-bones applications, presented by the [olauncher](https://play.google.com/store/apps/details?id=app.olauncher&hl=en_US&gl=US) alternative launcher.  There are more applications hidden if I scroll upward, but there is no Chrome, Google Search, Youtube, or Play Store - and no way to enable them either until I'm desperate and at a computer again.
 
 ## Usage
 
