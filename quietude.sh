@@ -62,7 +62,7 @@ function adb_connected() {
   echo "adb devices found:\n${devices}"
 
   if [ "${devices}" = "" ]; then
-    echo "Phone not found. Connect a USB cable and enable debugging mode: https://developer.android.com/studio/command-line/adb"
+    echo "Phone not found. Connect a USB cable and enable USB debugging: https://developer.android.com/studio/command-line/adb"
     exit 1
   fi
 }
