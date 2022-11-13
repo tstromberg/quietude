@@ -98,27 +98,44 @@ done
 
 items="$(echo $list | sort -u | grep '\.'| xargs | sed s/' '/'\$\|\^'/g)"
 APP_RE="^${items}$"
+echo "${MODE} regexp: ${APP_RE}"
+echo ""
 
 case "${MODE}" in
   enable)
     adb_installed || exit 1
     adb_connected || exit 1
+    echo "Listing enabled packages matching ${APP_RE} ..."
+    echo ""
+    matched=0
 
     for pkg in $(adb shell pm list packages -u | sed s/package://g | egrep "${APP_RE}"); do
+      matched=$(($matched + 1))
+      echo "= ${pkg}"
       adb shell pm enable --user 0 $pkg 2>/dev/null
       adb shell cmd package install-existing --user 0 $pkg 2>/dev/null
       echo ""
     done
+
+    echo "${matched} packages enabled"
     ;;
   disable)
     adb_installed || exit 1
     adb_connected || exit 1
+    echo "Listing packages matching ${APP_RE} ..."
+    echo ""
+    matched=0
     
     for pkg in $(adb shell pm list packages | sed s/package://g | egrep "${APP_RE}"); do
+      matched=$(($matched + 1))
+      echo "= ${pkg}"
       adb shell pm disable-user --user 0 $pkg 2>/dev/null
       adb shell pm uninstall --user 0 $pkg 2>/dev/null
       echo ""
     done
+
+    echo "${matched} packages disabled"
+
     ;;
   *)
     echo "unknown mode: ${MODE}"
