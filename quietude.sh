@@ -98,8 +98,6 @@ done
 
 items="$(echo $list | sort -u | grep '\.'| xargs | sed s/' '/'\$\|\^'/g)"
 APP_RE="^${items}$"
-echo "${MODE} regexp: ${APP_RE}"
-echo ""
 
 case "${MODE}" in
   enable)
