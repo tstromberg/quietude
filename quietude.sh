@@ -104,22 +104,20 @@ case "${MODE}" in
     adb_installed || exit 1
     adb_connected || exit 1
 
-    echo "Enabling: "
     for pkg in $(adb shell pm list packages -u | sed s/package://g | egrep "${APP_RE}"); do
-      echo " - ${pkg}"
       adb shell pm enable --user 0 $pkg 2>/dev/null
       adb shell cmd package install-existing --user 0 $pkg 2>/dev/null
+      echo ""
     done
     ;;
   disable)
     adb_installed || exit 1
     adb_connected || exit 1
     
-    echo "Disabling: "
     for pkg in $(adb shell pm list packages | sed s/package://g | egrep "${APP_RE}"); do
-      echo " - ${pkg}"
       adb shell pm disable-user --user 0 $pkg 2>/dev/null
       adb shell pm uninstall --user 0 $pkg 2>/dev/null
+      echo ""
     done
     ;;
   *)
