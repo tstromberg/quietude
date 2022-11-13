@@ -39,7 +39,7 @@ readonly MODE=$1
 shift
 
 function adb_installed() {
-   adb version && return
+   adb version >/dev/null && return
 
    if [ -x  /opt/homebrew/bin/brew ]; then
      echo "Installing adb via homebrew ..."
@@ -59,7 +59,7 @@ function adb_installed() {
 
 function adb_connected() {
   devices=$(adb devices -l | egrep -v "^List of devices|^\$")
-  echo "adb devices found:\n${devices}"
+  echo "adb devices found:\n${devices}\n"
 
   if [ "${devices}" = "" ]; then
     echo "Phone not found. Connect a USB cable and enable USB debugging: https://developer.android.com/studio/command-line/adb"
@@ -101,23 +101,25 @@ APP_RE="^${items}$"
 
 case "${MODE}" in
   enable)
-    echo "enable apps: ${APP_RE}\n"
     adb_installed || exit 1
     adb_connected || exit 1
 
+    echo "Enabling: "
     for pkg in $(adb shell pm list packages -u | sed s/package://g | egrep "${APP_RE}"); do
-      adb shell pm enable --user 0 $pkg
-      adb shell cmd package install-existing --user 0 $pkg
+      echo " - ${pkg}"
+      adb shell pm enable --user 0 $pkg 2>/dev/null
+      adb shell cmd package install-existing --user 0 $pkg 2>/dev/null
     done
     ;;
   disable)
-    echo "disable apps: ${APP_RE}\n"
     adb_installed || exit 1
     adb_connected || exit 1
     
+    echo "Disabling: "
     for pkg in $(adb shell pm list packages | sed s/package://g | egrep "${APP_RE}"); do
-      adb shell pm disable-user --user 0 $pkg
-      adb shell pm uninstall --user 0 $pkg
+      echo " - ${pkg}"
+      adb shell pm disable-user --user 0 $pkg 2>/dev/null
+      adb shell pm uninstall --user 0 $pkg 2>/dev/null
     done
     ;;
   *)
