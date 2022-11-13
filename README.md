@@ -16,7 +16,7 @@ A couple of bare-bones applications, presented by the [olauncher](https://play.g
 
 ## Usage
 
-![screenshot](images/screenshot.jpg?raw=true "screenshot")
+![screenshot](images/terminal.jpg?raw=true "screenshot")
 
 Syntax:
 
