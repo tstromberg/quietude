@@ -82,13 +82,17 @@ What does Quietude disable on a phone? It depends on the category used:
 
 ## FAQ
 
+### Why is this any different than using "Disable App" in Android Settings?
+
+The technique that quietude uses uninstalls the app from the user, so that it does not show up in the Apps list. This means you can't have a sudden change of heart while your bored, as re-enablivg an application requires plugging your phone back into a computer again and running `quietude` or `adb`.
+
 ### What about disabling installed Social Networking apps?
 
 I don't have any to test against, but feel free to send a pull request if you know the ID of any that ship with a phone.
 
 ### What phones will this work on?
 
-As far as I know, any phone where you can enable USB Debugging. This should include all [Google Play supported devices](https://storage.googleapis.com/play_public/supported_devices.html).
+As far as I know, any Android phone where the USB debugger is available. This should include all [Google Play supported devices](https://storage.googleapis.com/play_public/supported_devices.html).
 
 ### What about ordering in restaurants?
 
