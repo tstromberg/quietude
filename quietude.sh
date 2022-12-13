@@ -21,15 +21,73 @@ com.verizon.services
 readonly STORE="com.android.vending"
 readonly GMAIL="com.google.android.gm"
 readonly MAPS="com.google.android.apps.maps"
-
-readonly DISTRACTIONS="
-com.android.chrome
+readonly DRIVE="
 com.google.android.apps.docs
 com.google.android.apps.docs.editors.docs
+"
+
+readonly BUILTIN_DISTRACTIONS="
 com.google.android.googlequicksearchbox
 com.google.android.googlequicksearchbox.nga_resources
 com.google.android.youtube
 "
+
+readonly BROWSERS="
+com.android.chrome
+com.chrome.dev
+com.duckduckgo.mobile.android
+com.microsoft.emmx
+com.opera.gx
+com.opera.mini.native.beta
+org.mozilla.firefox
+org.mozilla.firefox_beta
+"
+
+readonly SOCIAL_MEDIA="
+com.bereal.ft
+com.facebook.katana
+com.instagram.android
+com.keylesspalace.tusky
+com.pinterest
+com.reddit.frontpage
+com.rubenmayayo.reddit
+com.snapchat.android
+com.truthsocial.android.app
+com.tumblr
+com.twitter.android
+com.vkontakte.android
+com.zhiliaoapp.musically
+ml.docilealligator.infinityforreddit
+org.joinmastodon.android
+tv.twitch.android.app
+"
+
+readonly NEWS="
+bbc.mobile.news.www
+com.abc.abcnews
+com.aljazeera.mobile
+com.cbsnews.ott
+com.cnn.mobile.android.phone
+com.devhd.feedly
+com.eterno
+com.foxnews.android
+com.google.android.apps.magazines
+com.guardian
+com.nytimes.android
+com.opera.app.news
+com.particlenews.newsbreak
+com.spotcrime.spotcrimemobilev2
+com.treemolabs.apps.cbsnews
+com.yahoo.mobile.client.android.yahoo
+com.zumobi.msnbc
+flipboard.app
+jp.gocro.smartnews.android
+mnn.Android
+org.npr.one
+sp0n.citizen
+"
+
+DISTRACTIONS="${BROWSERS} ${NEWS} ${BUILTIN_DISTRACTIONS} ${SOCIAL_MEDIA}"
 
 # Convenience for an extra path one might happen to have 'adb' installed.
 export PATH=$PATH:$HOME/Downloads/platform-tools
@@ -72,13 +130,25 @@ list=""
 while [[ $# -gt 0 ]]; do
   case $1 in
     all)
-      list="${BLOAT} ${DISTRACTIONS} ${MAPS} ${STORE} ${GMAIL}"
+      list="${BLOAT} ${DISTRACTIONS} ${MAPS} ${STORE} ${DRIVE} ${GMAIL}"
       ;;
     bloat)
       list="${list} ${BLOAT}"
       ;;  
+    social)
+      list="${list} ${SOCIAL_MEDIA}"
+      ;;
+    news)
+      list="${list} ${NEWS}"
+      ;;
+    browsers)
+      list="${BROWSERS}"
+      ;;
     distractions)
-      list="${list} ${DISTRACTIONS}"
+      list="${list} ${BROWSERS} ${NEWS} ${BUILTIN_DISTRACTIONS} ${SOCIAL_MEDIA}"
+      ;;
+    drive)
+      list="${list} ${DRIVE}"
       ;;
     maps)
       list="${list} ${MAPS}"
