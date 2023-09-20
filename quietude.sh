@@ -30,6 +30,8 @@ readonly BUILTIN_DISTRACTIONS="
 com.google.android.googlequicksearchbox
 com.google.android.googlequicksearchbox.nga_resources
 com.google.android.youtube
+com.android.htmlviewer
+com.google.android.videos
 "
 
 readonly BROWSERS="
@@ -88,6 +90,7 @@ sp0n.citizen
 "
 
 DISTRACTIONS="${BROWSERS} ${NEWS} ${BUILTIN_DISTRACTIONS} ${SOCIAL_MEDIA}"
+ALL="${DISTRACTIONS} ${DRIVE} ${MAPS} ${GMAIL} ${STORE} ${BLOAT}"
 
 # Convenience for an extra path one might happen to have 'adb' installed.
 export PATH=$PATH:$HOME/Downloads/platform-tools
@@ -129,9 +132,6 @@ function adb_connected() {
 list=""
 while [[ $# -gt 0 ]]; do
   case $1 in
-    all)
-      list="${BLOAT} ${DISTRACTIONS} ${MAPS} ${STORE} ${DRIVE} ${GMAIL}"
-      ;;
     bloat)
       list="${list} ${BLOAT}"
       ;;  
@@ -142,10 +142,7 @@ while [[ $# -gt 0 ]]; do
       list="${list} ${NEWS}"
       ;;
     browsers)
-      list="${BROWSERS}"
-      ;;
-    distractions)
-      list="${list} ${BROWSERS} ${NEWS} ${BUILTIN_DISTRACTIONS} ${SOCIAL_MEDIA}"
+      list="${list} ${BROWSERS}"
       ;;
     drive)
       list="${list} ${DRIVE}"
@@ -159,6 +156,16 @@ while [[ $# -gt 0 ]]; do
     gmail)
       list="${list} ${GMAIL}"
       ;;
+    launcher)
+      list="${list} com.google.android.apps.nexuslauncher"
+      ;;
+    distractions)
+      list="${list} ${DISTRACTIONS}"
+      ;;
+    all)
+      list="${list} ${ALL}"
+      ;;
+
     *)
       echo "unknown group: $1"
       exit 1
