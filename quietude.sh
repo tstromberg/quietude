@@ -1,5 +1,5 @@
 #!/bin/sh
-# 
+#
 # Quietude - a distraction-free Android experience
 #
 # Usage:
@@ -31,7 +31,6 @@ com.google.android.googlequicksearchbox
 com.google.android.googlequicksearchbox.nga_resources
 com.google.android.youtube
 com.android.htmlviewer
-com.google.android.videos
 "
 
 readonly BROWSERS="
@@ -99,120 +98,123 @@ export PATH=$PATH:$HOME/Downloads/platform-tools
 readonly MODE=$1
 shift
 
-function adb_installed() {
-   adb version >/dev/null && return
+adb_installed() {
+	adb version >/dev/null && return
 
-   if [ -x  /opt/homebrew/bin/brew ]; then
-     echo "Installing adb via homebrew ..."
-     brew install android-platform-tools
-     return
-   fi
+	if [ -x /opt/homebrew/bin/brew ]; then
+		echo "Installing adb via homebrew ..."
+		brew install android-platform-tools
+		return
+	fi
 
-   if [ -x /usr/bin/apt ]; then
-    echo "Installing adb via apt ..."
-    sudo apt-get install android-tools-adb
-    return
-   fi
+	if [ -x /usr/bin/apt ]; then
+		echo "Installing adb via apt ..."
+		sudo apt-get install android-tools-adb
+		return
+	fi
 
-   echo "Please install adb: https://developer.android.com/studio/releases/platform-tools"
-   exit 1
+	echo "Please install adb: https://developer.android.com/studio/releases/platform-tools"
+	exit 1
 }
 
-function adb_connected() {
-  devices=$(adb devices -l | egrep -v "^List of devices|^\$")
-  echo "adb devices found:\n${devices}\n"
+adb_connected() {
+	devices=$(adb devices -l | egrep -v "^List of devices|^\$")
+	echo "adb devices found:\n${devices}\n"
 
-  if [ "${devices}" = "" ]; then
-    echo "Phone not found. Connect a USB cable and enable USB debugging: https://developer.android.com/studio/command-line/adb"
-    exit 1
-  fi
+	if [ "${devices}" = "" ]; then
+		echo "Phone not found. Connect a USB cable and enable USB debugging: https://developer.android.com/studio/command-line/adb"
+		exit 1
+	fi
 }
-
 
 list=""
 while [[ $# -gt 0 ]]; do
-  case $1 in
-    bloat)
-      list="${list} ${BLOAT}"
-      ;;  
-    social)
-      list="${list} ${SOCIAL_MEDIA}"
-      ;;
-    news)
-      list="${list} ${NEWS}"
-      ;;
-    browsers)
-      list="${list} ${BROWSERS}"
-      ;;
-    drive)
-      list="${list} ${DRIVE}"
-      ;;
-    maps)
-      list="${list} ${MAPS}"
-      ;;
-    store)
-      list="${list} ${STORE}"
-      ;;
-    gmail)
-      list="${list} ${GMAIL}"
-      ;;
-    launcher)
-      list="${list} com.google.android.apps.nexuslauncher"
-      ;;
-    distractions)
-      list="${list} ${DISTRACTIONS}"
-      ;;
-    all)
-      list="${list} ${ALL}"
-      ;;
-
-    *)
-      echo "unknown group: $1"
-      exit 1
-  esac
-  shift
+	case $1 in
+	bloat)
+		list="${list} ${BLOAT}"
+		;;
+	social)
+		list="${list} ${SOCIAL_MEDIA}"
+		;;
+	news)
+		list="${list} ${NEWS}"
+		;;
+	browsers)
+		list="${list} ${BROWSERS}"
+		;;
+	drive)
+		list="${list} ${DRIVE}"
+		;;
+	maps)
+		list="${list} ${MAPS}"
+		;;
+	store)
+		list="${list} ${STORE}"
+		;;
+	gmail)
+		list="${list} ${GMAIL}"
+		;;
+	launcher)
+		list="${list} com.google.android.apps.nexuslauncher"
+		;;
+	tv)
+		list="${list} com.google.android.videos"
+		;;
+	distractions)
+		list="${list} ${DISTRACTIONS}"
+		;;
+	all)
+		list="${list} ${ALL}"
+		;;
+	*)
+		echo "unknown group: $1"
+		exit 1
+		;;
+	esac
+	shift
 done
 
-items="$(echo $list | sort -u | grep '\.'| xargs | sed s/' '/'\$\|\^'/g)"
+items="$(echo $list | sort -u | grep '\.' | xargs | sed s/' '/'\$\|\^'/g)"
 APP_RE="^${items}$"
 
 case "${MODE}" in
-  enable)
-    adb_installed || exit 1
-    adb_connected || exit 1
-    echo "Listing enabled packages matching ${APP_RE} ..."
-    echo ""
-    matched=0
+enable)
+	adb_installed || exit 1
+	adb_connected || exit 1
+	echo "Listing enabled packages matching ${APP_RE} ..."
+	echo ""
+	matched=0
 
-    for pkg in $(adb shell pm list packages -u | sed s/package://g | egrep "${APP_RE}"); do
-      matched=$(($matched + 1))
-      echo "= ${pkg}"
-      adb shell pm enable --user 0 $pkg 2>/dev/null
-      adb shell cmd package install-existing --user 0 $pkg 2>/dev/null
-      echo ""
-    done
+	for pkg in $(adb shell pm list packages -u | sed s/package://g | egrep "${APP_RE}"); do
+		matched=$(($matched + 1))
+		echo "= ${pkg}"
+		adb shell pm enable --user 0 $pkg 2>/dev/null
+		adb shell cmd package install-existing --user 0 $pkg 2>/dev/null
+		echo ""
+	done
 
-    echo "${matched} packages enabled"
-    ;;
-  disable)
-    adb_installed || exit 1
-    adb_connected || exit 1
-    echo "Listing packages matching ${APP_RE} ..."
-    echo ""
-    matched=0
-    
-    for pkg in $(adb shell pm list packages | sed s/package://g | egrep "${APP_RE}"); do
-      matched=$(($matched + 1))
-      echo "= ${pkg}"
-      adb shell pm disable-user --user 0 $pkg 2>/dev/null
-      adb shell pm uninstall --user 0 $pkg 2>/dev/null
-      echo ""
-    done
+	echo "${matched} packages enabled"
+	;;
+disable)
+	adb_installed || exit 1
+	adb_connected || exit 1
+	echo "Listing packages matching ${APP_RE} ..."
+	echo ""
+	matched=0
 
-    echo "${matched} packages disabled"
+	for pkg in $(adb shell pm list packages | sed s/package://g | egrep "${APP_RE}"); do
+		matched=$(($matched + 1))
+		echo "= ${pkg}"
+		adb shell pm disable-user --user 0 $pkg 2>/dev/null
+		adb shell pm uninstall --user 0 $pkg 2>/dev/null
+		echo ""
+	done
 
-    ;;
-  *)
-    echo "unknown mode: ${MODE}"
-    exit 1
+	echo "${matched} packages disabled"
+
+	;;
+*)
+	echo "unknown mode: ${MODE}"
+	exit 1
+	;;
 esac
