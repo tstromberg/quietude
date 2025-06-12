@@ -11,8 +11,13 @@ com.android.musicfx
 com.google.android.apps.nbu.files
 com.google.android.apps.recorder
 com.google.android.apps.tips
+com.google.android.apps.pixel.creativeassistant
+com.google.android.apps.wear.companion
+com.google.android.apps.adm
+com.google.android.apps.bard
 com.google.android.apps.wellbeing
 com.google.android.apps.youtube.music
+com.fitbit.FitbitMobile
 com.verizon.llkagent
 com.verizon.mips.services
 com.verizon.services
@@ -30,6 +35,7 @@ readonly BUILTIN_DISTRACTIONS="
 com.google.android.googlequicksearchbox
 com.google.android.googlequicksearchbox.nga_resources
 com.google.android.youtube
+com.google.android.videos
 com.android.htmlviewer
 "
 
