@@ -23,7 +23,10 @@ com.verizon.mips.services
 com.verizon.services
 "
 
-readonly STORE="com.android.vending"
+readonly STORE="
+com.android.vending
+app.grapheneos.apps
+"
 readonly GMAIL="com.google.android.gm"
 readonly MAPS="com.google.android.apps.maps"
 readonly DRIVE="
